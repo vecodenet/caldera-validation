@@ -9,8 +9,10 @@ declare(strict_types = 1);
  * @copyright Copyright (c) 2023 Vecode. All rights reserved
  */
 
-namespace Caldera\Tests\Storage;
+namespace Caldera\Tests\Validation;
 
+use Closure;
+use Exception;
 use InvalidArgumentException;
 use RuntimeException;
 
@@ -20,8 +22,6 @@ use Caldera\Validation\Condition;
 use Caldera\Validation\RuleInterface;
 use Caldera\Validation\Validation;
 use Caldera\Validation\ValidationException;
-use Closure;
-use Exception;
 
 class ValidationTest extends TestCase {
 
