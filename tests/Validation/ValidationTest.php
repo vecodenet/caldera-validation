@@ -32,7 +32,8 @@ class ValidationTest extends TestCase {
 	}
 
 	public function testInvalidArgumentOnCondition() {
-		$condition = new Condition();
+		$validation = new Validation();
+		$condition = new Condition($validation);
 		$this->expectException(InvalidArgumentException::class);
 		$condition->rule(5);
 	}
@@ -49,6 +50,12 @@ class ValidationTest extends TestCase {
 		$this->assertIsArray($conditions);
 		$this->assertCount(6, $conditions);
 		$this->assertContainsOnlyInstancesOf(Condition::class, $conditions);
+	}
+
+	public function testGetInvalidCustomRule() {
+		$validation = new Validation();
+		$this->expectException(InvalidArgumentException::class);
+		$rule = $validation->getRule('foo');
 	}
 
 	public function testAddClosureCondition() {
@@ -68,7 +75,27 @@ class ValidationTest extends TestCase {
 	public function testAddInvalidCustomRuleCondition() {
 		$validation = new Validation();
 		$this->expectException(RuntimeException::class);
-		$validation->condition('name', Condition::class)->validate([]);
+		$validation->condition('name', RuntimeException::class)->validate([]);
+	}
+
+	public function testAddCustomRuleClosure() {
+		$validation = new Validation();
+		$validation->rule('url', function() {});
+		$rules = $validation->getRules();
+		$this->assertArrayHasKey('url', $rules);
+	}
+
+	public function testAddCustomRuleClass() {
+		$validation = new Validation();
+		$validation->rule('url', CustomRule::class);
+		$rules = $validation->getRules();
+		$this->assertArrayHasKey('url', $rules);
+	}
+
+	public function testGetInvalidCustomRuleInvalidType() {
+		$validation = new Validation();
+		$this->expectException(InvalidArgumentException::class);
+		$validation->rule('url', 42);
 	}
 
 	public function testValidateBail() {
@@ -383,13 +410,47 @@ class ValidationTest extends TestCase {
 		$this->expectException(ValidationException::class);
 		$validation->validate(['test' => 'Lorem ipsum']);
 	}
+
+	public function testValidateCustomRuleGlobalClosure() {
+		$validation = new Validation();
+		$validation->rule('url', function(array $fields, string $key, array $options, Closure $fail) {
+			$https = $options[1] ?? '';
+			$value = $fields[$key] ?? '';
+			$valid = $value && filter_var($value, FILTER_VALIDATE_URL);
+			if ( $https && ! str_starts_with($value, 'https://') ) {
+				$valid = false;
+			}
+			if ( !$valid ) {
+				$fail('Invalid Website specified');
+			}
+		});
+		$validation->condition('test', 'url:https');
+		$validation->validate(['test' => 'https://vecode.net']);
+		$validation->validate(['test' => 'https://caldera.vecode.net']);
+		$this->expectException(ValidationException::class);
+		$validation->validate(['test' => 'http://localhost:8080']);
+	}
+
+	public function testValidateCustomRuleGlobalClass() {
+		$validation = new Validation();
+		$validation->rule('url', CustomRule::class);
+		$validation->condition('test', 'url:https');
+		$validation->validate(['test' => 'https://vecode.net']);
+		$validation->validate(['test' => 'https://caldera.vecode.net']);
+		$this->expectException(ValidationException::class);
+		$validation->validate(['test' => 'http://localhost:8080']);
+	}
 }
 
 class CustomRule implements RuleInterface {
 
 	public function __invoke(array $fields, string $key, array $options, Closure $fail): void {
+		$https = $options[1] ?? '';
 		$value = $fields[$key] ?? '';
-		$valid = $value && filter_var($value, FILTER_VALIDATE_URL);;
+		$valid = $value && filter_var($value, FILTER_VALIDATE_URL);
+		if ( $https && ! str_starts_with($value, 'https://') ) {
+			$valid = false;
+		}
 		if ( !$valid ) {
 			$fail('Invalid Website specified');
 		}

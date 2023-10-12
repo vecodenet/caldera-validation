@@ -20,22 +20,48 @@ class Validation {
 
 	/**
 	 * Conditions array
-	 * @var array
 	 */
-	protected $conditions = [];
+	protected array $conditions = [];
+
+	/**
+	 * Rules array
+	 */
+	protected array $rules = [];
 
 	/**
 	 * Error bag
-	 * @var array
 	 */
-	protected $errors = [];
+	protected array $errors = [];
 
 	/**
 	 * Get conditions array
-	 * @return array
 	 */
 	public function getConditions(): array {
 		return $this->conditions;
+	}
+
+	/**
+	 * Get rules array
+	 */
+	public function getRules(): array {
+		return $this->rules;
+	}
+
+	/**
+	 * Check if rule exists
+	 */
+	public function hasRule(string $name): bool {
+		return isset( $this->rules[$name] );
+	}
+
+	/**
+	 * Get rule handler
+	 */
+	public function getRule(string $name): mixed {
+		if (! isset( $this->rules[$name] ) ) {
+			throw new InvalidArgumentException("Rule {$name} does not exist");
+		}
+		return $this->rules[$name];
 	}
 
 	/**
@@ -44,9 +70,9 @@ class Validation {
 	 * @param  mixed  $rules   Condition rules
 	 * @return $this
 	 */
-	public function condition(string $field, $rules) {
+	public function condition(string $field, mixed $rules) {
 		if (! isset( $this->conditions[$field] ) ) {
-			$this->conditions[$field] = new Condition();
+			$this->conditions[$field] = new Condition($this);
 		}
 		if ( is_array($rules) || is_string($rules) || $rules instanceof Closure ) {
 			$this->conditions[$field]->rule($rules);
@@ -57,10 +83,24 @@ class Validation {
 	}
 
 	/**
+	 * Add rule
+	 * @param  string $name    Rule name
+	 * @param  mixed  $handler Rule handler
+	 * @return $this
+	 */
+	public function rule(string $name, mixed $handler) {
+		if ( is_string($handler) || $handler instanceof Closure ) {
+			$this->rules[$name] = $handler;
+		} else {
+			throw new InvalidArgumentException('Invalid handler type specified');
+		}
+		return $this;
+	}
+
+	/**
 	 * Validate fields
 	 * @param  array $fields Fields array
 	 * @param  bool  $bail   Bail flag
-	 * @return bool
 	 */
 	public function validate(array $fields, bool $bail = false): bool {
 		$this->errors = [];

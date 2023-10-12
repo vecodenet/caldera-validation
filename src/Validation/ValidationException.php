@@ -18,9 +18,8 @@ class ValidationException extends RuntimeException {
 
 	/**
 	 * Error bag
-	 * @var array
 	 */
-	protected $errors;
+	protected array $errors;
 
 	/**
 	 * Constructor
@@ -33,7 +32,6 @@ class ValidationException extends RuntimeException {
 
 	/**
 	 * Get errors instance
-	 * @return array
 	 */
 	public function getErrors(): array {
 		return $this->errors;

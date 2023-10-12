@@ -21,7 +21,6 @@ interface RuleInterface {
 	 * @param  string  $key     Field key
 	 * @param  array   $options Options array
 	 * @param  Closure $fail    Failure callback
-	 * @return void
 	 */
 	public function __invoke(array $fields, string $key, array $options, Closure $fail): void;
 }

@@ -23,20 +23,30 @@ class Condition {
 	use ValidatesData;
 
 	/**
-	 * Rules array
-	 * @var array
+	 * Validation instance
 	 */
-	protected $rules = [];
+	protected Validation $validation;
+
+	/**
+	 * Rules array
+	 */
+	protected array $rules = [];
 
 	/**
 	 * Error bag
-	 * @var array
 	 */
-	protected $errors = [];
+	protected array $errors = [];
+
+	/**
+	 * Constructor
+	 * @param Validation $validation Validation instance
+	 */
+	public function __construct(Validation $validation) {
+		$this->validation = $validation;
+	}
 
 	/**
 	 * Get errors
-	 * @return array
 	 */
 	public function getErrors(): array {
 		return $this->errors;
@@ -47,7 +57,7 @@ class Condition {
 	 * @param  mixed  $rule    Rule to add
 	 * @return $this
 	 */
-	public function rule($rule) {
+	public function rule(mixed $rule) {
 		if ( is_array($rule) ) {
 			foreach ($rule as $item) {
 				$this->rule($item);
@@ -85,7 +95,6 @@ class Condition {
 	 * @param  array  $fields Fields array
 	 * @param  string $key    Field key
 	 * @param  bool   $bail   Bail flag
-	 * @return bool
 	 */
 	public function check(array $fields, string $key, bool $bail = false): bool {
 		$passed = true;
@@ -112,7 +121,23 @@ class Condition {
 					if ( method_exists($this, $method) ) {
 						$callable = [$this, $method];
 					} else {
-						throw new RuntimeException('Unknown rule type');
+						if ( $this->validation->hasRule($type) ) {
+							$handler = $this->validation->getRule($type);
+							if ($handler instanceof Closure) {
+								$callable = $handler;
+							} else if ( class_exists($handler) ) {
+								$instance = new $handler();
+								if ($instance instanceof RuleInterface) {
+									$callable = $instance;
+								} else {
+									throw new RuntimeException('Must implement RuleInterface');
+								}
+							} else {
+								throw new RuntimeException("Unknown rule type: {$type}");
+							}
+						} else {
+							throw new RuntimeException("Unknown rule type: {$type}");
+						}
 					}
 				}
 			}

@@ -21,7 +21,6 @@ trait ValidatesData {
 	 * @param  string  $key     Field name
 	 * @param  array   $options Rule options
 	 * @param  Closure $fail    Failure callback
-	 * @return void
 	 */
 	public function validateRequired(array $fields, string $key, array $options, Closure $fail): void {
 		$value = $fields[$key] ?? null;
@@ -37,7 +36,6 @@ trait ValidatesData {
 	 * @param  string  $key     Field name
 	 * @param  array   $options Rule options
 	 * @param  Closure $fail    Failure callback
-	 * @return void
 	 */
 	public function validateAlpha(array $fields, string $key, array $options, Closure $fail): void {
 		$value = $fields[$key] ?? null;
@@ -54,7 +52,6 @@ trait ValidatesData {
 	 * @param  string  $key     Field name
 	 * @param  array   $options Rule options
 	 * @param  Closure $fail    Failure callback
-	 * @return void
 	 */
 	public function validateAlphanum(array $fields, string $key, array $options, Closure $fail): void {
 		$value = $fields[$key] ?? null;
@@ -71,7 +68,6 @@ trait ValidatesData {
 	 * @param  string  $key     Field name
 	 * @param  array   $options Rule options
 	 * @param  Closure $fail    Failure callback
-	 * @return void
 	 */
 	public function validateNum(array $fields, string $key, array $options, Closure $fail): void {
 		$value = $fields[$key] ?? null;
@@ -88,7 +84,6 @@ trait ValidatesData {
 	 * @param  string  $key     Field name
 	 * @param  array   $options Rule options
 	 * @param  Closure $fail    Failure callback
-	 * @return void
 	 */
 	public function validateSlug(array $fields, string $key, array $options, Closure $fail): void {
 		$value = $fields[$key] ?? null;
@@ -105,7 +100,6 @@ trait ValidatesData {
 	 * @param  string  $key     Field name
 	 * @param  array   $options Rule options
 	 * @param  Closure $fail    Failure callback
-	 * @return void
 	 */
 	public function validateRegex(array $fields, string $key, array $options, Closure $fail): void {
 		$value = $fields[$key] ?? null;
@@ -122,7 +116,6 @@ trait ValidatesData {
 	 * @param  string  $key     Field name
 	 * @param  array   $options Rule options
 	 * @param  Closure $fail    Failure callback
-	 * @return void
 	 */
 	public function validateEmail(array $fields, string $key, array $options, Closure $fail): void {
 		$value = $fields[$key] ?? null;
@@ -139,7 +132,6 @@ trait ValidatesData {
 	 * @param  string  $key     Field name
 	 * @param  array   $options Rule options
 	 * @param  Closure $fail    Failure callback
-	 * @return void
 	 */
 	public function validateSame(array $fields, string $key, array $options, Closure $fail): void {
 		$value = $fields[$key] ?? null;
@@ -157,7 +149,6 @@ trait ValidatesData {
 	 * @param  string  $key     Field name
 	 * @param  array   $options Rule options
 	 * @param  Closure $fail    Failure callback
-	 * @return void
 	 */
 	public function validateDifferent(array $fields, string $key, array $options, Closure $fail): void {
 		$value = $fields[$key] ?? null;
@@ -175,7 +166,6 @@ trait ValidatesData {
 	 * @param  string  $key     Field name
 	 * @param  array   $options Rule options
 	 * @param  Closure $fail    Failure callback
-	 * @return void
 	 */
 	public function validateAfter(array $fields, string $key, array $options, Closure $fail): void {
 		$value = $fields[$key] ?? null;
@@ -193,7 +183,6 @@ trait ValidatesData {
 	 * @param  string  $key     Field name
 	 * @param  array   $options Rule options
 	 * @param  Closure $fail    Failure callback
-	 * @return void
 	 */
 	public function validateBefore(array $fields, string $key, array $options, Closure $fail): void {
 		$value = $fields[$key] ?? null;
@@ -211,7 +200,6 @@ trait ValidatesData {
 	 * @param  string  $key     Field name
 	 * @param  array   $options Rule options
 	 * @param  Closure $fail    Failure callback
-	 * @return void
 	 */
 	public function validateBetween(array $fields, string $key, array $options, Closure $fail): void {
 		$value = $fields[$key] ?? null;
@@ -239,7 +227,6 @@ trait ValidatesData {
 	 * @param  string  $key     Field name
 	 * @param  array   $options Rule options
 	 * @param  Closure $fail    Failure callback
-	 * @return void
 	 */
 	public function validateMin(array $fields, string $key, array $options, Closure $fail): void {
 		$value = $fields[$key] ?? null;
@@ -266,7 +253,6 @@ trait ValidatesData {
 	 * @param  string  $key     Field name
 	 * @param  array   $options Rule options
 	 * @param  Closure $fail    Failure callback
-	 * @return void
 	 */
 	public function validateMax(array $fields, string $key, array $options, Closure $fail): void {
 		$value = $fields[$key] ?? null;
@@ -293,7 +279,6 @@ trait ValidatesData {
 	 * @param  string  $key     Field name
 	 * @param  array   $options Rule options
 	 * @param  Closure $fail    Failure callback
-	 * @return void
 	 */
 	public function validateSize(array $fields, string $key, array $options, Closure $fail): void {
 		$value = $fields[$key] ?? null;
@@ -320,7 +305,6 @@ trait ValidatesData {
 	 * @param  string  $key     Field name
 	 * @param  array   $options Rule options
 	 * @param  Closure $fail    Failure callback
-	 * @return void
 	 */
 	public function validateArray(array $fields, string $key, array $options, Closure $fail): void {
 		$value = $fields[$key] ?? null;
@@ -336,7 +320,6 @@ trait ValidatesData {
 	 * @param  string  $key     Field name
 	 * @param  array   $options Rule options
 	 * @param  Closure $fail    Failure callback
-	 * @return void
 	 */
 	public function validateNumeric(array $fields, string $key, array $options, Closure $fail): void {
 		$value = $fields[$key] ?? null;
@@ -352,7 +335,6 @@ trait ValidatesData {
 	 * @param  string  $key     Field name
 	 * @param  array   $options Rule options
 	 * @param  Closure $fail    Failure callback
-	 * @return void
 	 */
 	public function validateString(array $fields, string $key, array $options, Closure $fail): void {
 		$value = $fields[$key] ?? null;
